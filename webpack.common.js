@@ -2,7 +2,6 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.jsx'], // File extensions to resolve
 	},
-
 	module: {
 		rules: [
 			{
@@ -31,6 +30,20 @@ module.exports = {
 					'sass-loader',
 				],
 			},
+			{
+				test: /\.js$/,
+				use: [
+				  {
+					loader: path.resolve('path/to/loader.js'),
+					options: {
+					  /* ... */
+					},
+				  },
+				],
+			  },
 		],
 	},
+	resolveLoader: {
+		modules: ['node_modules', path.resolve(__dirname, 'loaders')],
+	  },
 };
