@@ -1,3 +1,4 @@
+const path = require("path")
 module.exports = {
 	resolve: {
 		extensions: ['.js', '.jsx'], // File extensions to resolve
@@ -30,17 +31,7 @@ module.exports = {
 					'sass-loader',
 				],
 			},
-			{
-				test: /\.js$/,
-				use: [
-				  {
-					loader: path.resolve('path/to/loader.js'),
-					options: {
-					  /* ... */
-					},
-				  },
-				],
-			  },
+			
 		],
 	},
 	resolveLoader: {

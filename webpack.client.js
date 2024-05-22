@@ -1,7 +1,7 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const webpackCommon = require('./webpack.common');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = merge(webpackCommon, {
 	name: 'client',
 	target: 'web',
@@ -17,9 +17,9 @@ module.exports = merge(webpackCommon, {
 	devServer: {
 		port: 8080,
 	},
-	
+
 	// plugins: [new HtmlWebpackPlugin({
-	// 	template: ".public/index.html",
+	// 	template: "./public/index.html",
 	// })],
 	devtool: 'eval-source-map',
 });
