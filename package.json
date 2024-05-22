@@ -53,14 +53,7 @@
     "webpack": "^5.91.0",
     "webpack-merge": "^5.10.0"
   },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      // "eslint --fix",
-      "git add"
-    ],
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "npm run format"
-  },
+
   "jest": {
     "testEnvironment": "node"
   }
