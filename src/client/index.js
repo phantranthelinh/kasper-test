@@ -8,6 +8,8 @@ import routes from './routes';
 const store = createStore(window.__STATE__);
 delete window.__STATE__;
 let router = createBrowserRouter(routes);
+
+console.log(process.env.NODE_ENV)
 const render = (Component) => {
 	const rootElement = document.getElementById('root');
 	if (process.env.NODE_ENV === 'production') {

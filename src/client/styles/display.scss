@@ -1,49 +1,35 @@
 $background-color: #5b5253;
 $text-color: white;
+$background-color_3: #847d7d;
 
 .display {
 	display: flex;
 	flex-direction: column;
-	padding: 10px;
-	padding-bottom: 20px;
 	background-color: $background-color;
 	border-top-left-radius: 16px;
 	border-top-right-radius: 16px;
+	min-height: 120px;
+	min-width: 400px;
+	.text {
+		margin-top: 40px;
+		margin-right:12px;
+		text-align: right;
+		font-size: 35px;
+		letter-spacing: 1.5px;
+		color: $text-color;
+	}
+
 }
 
-.expression {
-	padding: 5px;
-	margin-bottom: 10px;
-	height: 50px;
-}
 
 .input {
-	padding: 10px;
 	text-align: right;
-	background-color: $background-color;
+	background-color: $background-color_3;
 	color: $text-color;
 	border: 0px;
 	letter-spacing: 1.5px;
 	font-size: 35px;
-
-	&::placeholder {
-		color: $text-color;
-	}
-
-	&:focus-visible {
-		outline-style: none;
-		outline-width: 0px;
-	}
-}
-
-.value {
-	padding: 10px;
-	text-align: right;
-	background-color: $background-color;
-	color: $text-color;
-	border: 0px;
-	letter-spacing: 1.5px;
-	font-size: 15px;
+	width: "100%";
 
 	&::placeholder {
 		color: $text-color;

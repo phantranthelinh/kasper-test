@@ -1,4 +1,5 @@
 import App from '../App';
+import History from '../pages/History';
 import NotFound from '../pages/NotFound';
 
 const React = require('react');
@@ -11,10 +12,17 @@ const routes = [
 			return json({ message: 'Welcome to React Router!' });
 		},
 		element: <App />,
-		// Component() {
-		// 	let data = useLoaderData();
-		// 	return <h1>{data.message}</h1>;
-		// },
+
+		ErrorBoundary() {
+			return <NotFound />;
+		},
+	},
+	{
+		path: '/history',
+		element: <History />,
+		loader() {
+			return json({ message: 'Welcome to React Router!' });
+		},
 		ErrorBoundary() {
 			return <NotFound />;
 		},
@@ -48,6 +56,7 @@ const routes = [
 			},
 		],
 	},
+
 ];
 
 export default routes;

@@ -1,137 +1,156 @@
-import React, { useState } from "react";
-import Display from "./Display";
-import Buttons from "./Buttons";
-import { evaluate, round } from "mathjs";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/calculator.scss";
+import Buttons from "./Buttons";
+import Display from "./Display";
 import Dots from "./Dots";
 
 const Calculator = () => {
-  const [input, setInput] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [display, setDisplay] = useState('0');
+  const [operator, setOperator] = useState(null);
+  const [operand1, setOperand1] = useState(null);
+  const [waitingForOperand2, setWaitingForOperand2] = useState(false);
+  const [clearButtonLabel, setClearButtonLabel] = useState('AC');
+  const [isEdit, setIsEdit] = useState(false)
 
-  //input
-  const inputHandler = (event) => {
-    if (answer === "Invalid Input!!") return
-    let val = event.target.innerText;
+  const calculatorRef = useRef()
+  const [history, setHistory] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedHistory = window?.localStorage?.getItem("calculatorHistory") ? JSON?.parse(localStorage.getItem("calculatorHistory")) : null;;
+        return savedHistory ?? [];
 
-
-    let str = input + val;
-    if (str.length > 14) return;
-
-    if (answer !== "") {
-      setInput(answer + val);
-      setAnswer("");
-    } else setInput(str);
-  };
-
-  //Clear screen
-  const clearInput = () => {
-    setInput("");
-    setAnswer("");
-  };
-
-  // check brackets are balanced or not
-  const checkBracketBalanced = (expr) => {
-    let stack = [];
-    for (let i = 0; i < expr.length; i++) {
-      let x = expr[i];
-      if (x === "(") {
-        stack.push(x);
-        continue;
+      } catch (error) {
+        return []
       }
-
-      if (x === ")") {
-        if (stack.length === 0) return false;
-        else stack.pop();
-      }
-    }
-    return stack.length === 0;
-  };
-
-  // calculate final answer
-  const calculateAns = () => {
-    if (input === "") return;
-    let result = 0;
-    let finalexpression = input;
-    //  finalexpression = input.replaceAll("^", "**");  //for eval()
-    finalexpression = finalexpression.replaceAll("x", "*");
-    finalexpression = finalexpression.replaceAll("÷", "/");
-
-    // evaluate square root
-    let noSqrt = input.match(/√[0-9]+/gi);
-
-    if (noSqrt !== null) {
-      let evalSqrt = input;
-      for (let i = 0; i < noSqrt.length; i++) {
-        evalSqrt = evalSqrt.replace(
-          noSqrt[i],
-          `sqrt(${noSqrt[i].substring(1)})`
-        );
-      }
-      finalexpression = evalSqrt;
-    }
-
-    try {
-      // check brackets are balanced or not
-      if (!checkBracketBalanced(finalexpression)) {
-        const errorMessage = { message: "Brackets are not balanced!" };
-        throw errorMessage;
-      }
-      result = evaluate(finalexpression); //mathjs
-    } catch (error) {
-      result =
-        error.message === "Brackets are not balanced!"
-          ? "Brackets are not balanced!"
-          : "Invalid Input!!"; //error.message;
-    }
-    isNaN(result) ? setAnswer(result) : setAnswer(round(result, 3));
-  };
-
-
-
-  // change prefix of expression
-  const changePlusMinus = () => {
-    //need to change for answer
-    if (answer === "Invalid Input!!") return;
-    else if (answer !== "") {
-      let ans = answer.toString();
-      if (ans.charAt(0) === "-") {
-        let plus = "+";
-        setInput(plus.concat(ans.slice(1, ans.length)));
-      } else if (ans.charAt(0) === "+") {
-        let minus = "-";
-        setInput(minus.concat(ans.slice(1, ans.length)));
-      } else {
-        let minus = "-";
-        setInput(minus.concat(ans));
-      }
-      setAnswer("");
     } else {
-      if (input.charAt(0) === "-") {
-        let plus = "+";
-        setInput((prev) => plus.concat(prev.slice(1, prev.length)));
-      } else if (input.charAt(0) === "+") {
-        let minus = "-";
-        setInput((prev) => minus.concat(prev.slice(1, prev.length)));
-      } else {
-        let minus = "-";
-        setInput((prev) => minus.concat(prev));
-      }
+      // Handle the case where localStorage is not available
+      console.warn("localStorage is not available in this environment.");
+      return []
+    }
+
+  });
+
+  useEffect(() => {
+    localStorage.setItem('calculatorHistory', JSON.stringify(history));
+  }, [history]);
+
+
+  const handleNumberClick = (number) => {
+    if (waitingForOperand2) {
+      setDisplay(number);
+      setWaitingForOperand2(false);
+    } else {
+      setDisplay(display === '0' ? number : display + number);
+    }
+    setClearButtonLabel('C');
+    setIsEdit(false)
+  };
+
+  const handleOperatorClick = (nextOperator) => {
+    const inputValue = parseFloat(display);
+
+    if (operand1 === null) {
+      setOperand1(inputValue);
+    } else if (operator) {
+      const currentValue = operand1 || 0;
+      const newValue = performCalculation(currentValue, inputValue, operator);
+      setDisplay(String(newValue));
+      setOperand1(newValue);
+      setHistory([...history, `${currentValue} ${operator} ${inputValue} = ${newValue}`]);
+    }
+
+    setWaitingForOperand2(true);
+    setOperator(nextOperator);
+    setIsEdit(false)
+
+  };
+
+  const performCalculation = (operand1, operand2, operator) => {
+    switch (operator) {
+      case '+':
+        return operand1 + operand2;
+      case '-':
+        return operand1 - operand2;
+      case '*':
+        return operand1 * operand2;
+      case '/':
+        return operand1 / operand2;
+      default:
+        return operand2;
     }
   };
+
+  const handleEquals = () => {
+    const inputValue = parseFloat(display);
+
+    if (operator && operand1 !== null) {
+      const currentValue = operand1 || 0;
+      const newValue = performCalculation(currentValue, inputValue, operator);
+      setDisplay(String(newValue));
+      setOperand1(null);
+      setOperator(null);
+      setWaitingForOperand2(false);
+      setHistory([...history, `${currentValue} ${operator} ${inputValue} = ${newValue}`]);
+    }
+    setIsEdit(false)
+
+  };
+
+  const handleClear = () => {
+    setDisplay('0');
+    setClearButtonLabel('AC');
+    setOperator(null);
+    setOperand1(null);
+    setWaitingForOperand2(false);
+  };
+
+  const handleSignChange = () => {
+    setDisplay((prevDisplay) => (prevDisplay.charAt(0) === '-' ? prevDisplay.slice(1) : '-' + prevDisplay));
+  };
+
+  const handlePercentage = () => {
+    setDisplay((prevDisplay) => (parseFloat(prevDisplay) / 100).toString());
+  };
+
+  const handleDecimal = () => {
+    if (!display.includes('.')) {
+      setDisplay(display + '.');
+    }
+    setClearButtonLabel('C');
+  };
+
+  const handleClickOutSide = (event) => {
+    const { target } = event
+    if (calculatorRef.current && !calculatorRef.current.contains(target)) {
+      //*click out side 
+      setIsEdit(false);
+      setDisplay("0")
+
+    }
+
+  }
+
+  const props = {
+    handleClear,
+    clearButtonLabel,
+    handleOperatorClick,
+    handleNumberClick,
+    handleEquals,
+    handleSignChange,
+    handlePercentage,
+    handleDecimal,
+  }
+
+
 
   return (
     <>
-      <div className="container">
-        <div className="main">
+      <div className="container" onClick={handleClickOutSide}>
+        <div className="main" ref={calculatorRef} >
           <Dots />
-          <Display input={input} setInput={setInput} answer={answer} />
+          <Display display={display} setDisplay={setDisplay} setIsEdit={setIsEdit} isEdit={isEdit} />
           <Buttons
-            input={input}
-            inputHandler={inputHandler}
-            clearInput={clearInput}
-            changePlusMinus={changePlusMinus}
-            calculateAns={calculateAns}
+            {...props}
           />
         </div>
       </div>
