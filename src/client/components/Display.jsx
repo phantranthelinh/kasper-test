@@ -2,53 +2,32 @@ import React from "react";
 import "../styles/display.scss";
 
 const Display = (props) => {
-    const { input, setInput, answer } = props
+    const { display, setDisplay, setIsEdit, isEdit } = props
+
     const onChangeTagInput = (e) => {
         const re = /^[!%(-+\x2D-9^glox\xF7\u221A]+$/;
 
         if (e.target.value === "" || re.test(e.target.value)) {
-            setInput(e.target.value);
+            setDisplay(e.target.value);
         }
     };
-
     return (
         <>
             <div className="display">
-                {answer === "" ? (
-                    <>
-                        <input
-                            type="text"
-                            name="input"
-                            className="input"
-                            style={{ padding: "29px" }}
-                            value={input}
-                            placeholder="0"
-                            maxLength={12}
-                            // disabled
-                            onChange={onChangeTagInput}
-                            autoComplete="off"
-                        />
-                    </>
-                ) : (
-                    <>
-                        <input
-                            type="text"
-                            name="input"
-                            className="value"
-                            value={input}
-                            placeholder="0"
-                            maxLength={12}
-                            disabled
-                        />
-                        <input
-                            type="text"
-                            name="value"
-                            className="input"
-                            value={answer}
-                            disabled
-                        />
-                    </>
-                )}
+                <p className="text" onClick={() => setIsEdit(true)}>{display}</p>
+                {isEdit && <input
+                    type="text"
+                    name="input"
+                    className="input"
+                    placeholder="0"
+                    value={display}
+                    maxLength={12}
+                    onChange={onChangeTagInput}
+                    autoComplete="off"
+                />}
+
+
+
             </div>
         </>
     );
