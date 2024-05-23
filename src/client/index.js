@@ -5,7 +5,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import createStore from './redux/store';
 import routes from './routes';
-
 const store = createStore(window.__STATE__);
 delete window.__STATE__;
 let router = createBrowserRouter(routes);

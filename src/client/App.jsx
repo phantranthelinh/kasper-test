@@ -1,19 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment } from './redux/slices/counterSlice';
+import './styles/globalStyles.scss';
+import Calculator from './components/Calculator';
 const App = () => {
-	const count = useSelector((state) => state.counter.value);
-	const dispatch = useDispatch();
-
 	return (
-		<div>
-			<h1>Hello world!</h1>
-			<div>
-				<button onClick={() => dispatch(decrement())}>-</button>
-				<span>{count}</span>
-				<button onClick={() => dispatch(increment())}>+</button>
-			</div>
-		</div>
+		<>
+			<Calculator />
+		</>
 	);
 };
 
