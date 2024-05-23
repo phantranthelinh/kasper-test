@@ -1,0 +1,56 @@
+$background-color: #5b5253;
+$text-color: white;
+
+.display {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	padding-bottom: 20px;
+	background-color: $background-color;
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+}
+
+.expression {
+	padding: 5px;
+	margin-bottom: 10px;
+	height: 50px;
+}
+
+.input {
+	padding: 10px;
+	text-align: right;
+	background-color: $background-color;
+	color: $text-color;
+	border: 0px;
+	letter-spacing: 1.5px;
+	font-size: 35px;
+
+	&::placeholder {
+		color: $text-color;
+	}
+
+	&:focus-visible {
+		outline-style: none;
+		outline-width: 0px;
+	}
+}
+
+.value {
+	padding: 10px;
+	text-align: right;
+	background-color: $background-color;
+	color: $text-color;
+	border: 0px;
+	letter-spacing: 1.5px;
+	font-size: 15px;
+
+	&::placeholder {
+		color: $text-color;
+	}
+
+	&:focus-visible {
+		outline-style: none;
+		outline-width: 0px;
+	}
+}

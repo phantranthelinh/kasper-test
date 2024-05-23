@@ -1,19 +1,15 @@
-:root{
-    --brown: "#5b5453",
-    --brown2: "#6b6364",
-    --brown3: "#847d7d",
-    --yellow: "#fd9e2b",
-    --gray: "#c1c1c1",
-    --green: "#34c548",
-    --red: "#fc625e",
-}
-*{
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap');
+
+
+
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-.container{
-    flex:1;
-    height:100vh;
+body {
+    margin: 0;
+    font-family: "Alexandria", sans-serif;
+    color: white;
 }
