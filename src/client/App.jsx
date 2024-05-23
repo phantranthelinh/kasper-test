@@ -1,12 +1,11 @@
 import React from 'react';
-import './styles/style.scss';
+import './styles/globalStyles.scss';
+import Calculator from './components/Calculator';
 const App = () => {
 	return (
-		<div className="container">
-			<div className="app-wrapper">
-				<h1 className='red'>Test</h1>
-			</div>
-		</div>
+		<>
+			<Calculator />
+		</>
 	);
 };
 
