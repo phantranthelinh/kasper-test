@@ -1,17 +1,10 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment } from './redux/slices/counterSlice';
+import './styles/style.scss';
 const App = () => {
-	const count = useSelector((state) => state.counter.value);
-	const dispatch = useDispatch();
-
 	return (
-		<div>
-			<h1>Hello world!</h1>
-			<div>
-				<button onClick={() => dispatch(decrement())}>-</button>
-				<span>{count}</span>
-				<button onClick={() => dispatch(increment())}>+</button>
+		<div className="container">
+			<div className="app-wrapper">
+				<h1 className='red'>Test</h1>
 			</div>
 		</div>
 	);
