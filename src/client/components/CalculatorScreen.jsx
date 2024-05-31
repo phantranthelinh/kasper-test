@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/display.scss";
 
-const Display = (props) => {
+const CalculatorScreen  = (props) => {
     const { display, setDisplay, setIsEdit, isEdit } = props
 
     const onChangeTagInput = (e) => {
@@ -35,4 +35,4 @@ const Display = (props) => {
 
 
 
-export default Display;
+export default CalculatorScreen ;

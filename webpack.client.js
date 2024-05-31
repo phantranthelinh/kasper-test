@@ -18,8 +18,8 @@ module.exports = merge(webpackCommon, {
 		port: 8080,
 	},
 
-	// plugins: [new HtmlWebpackPlugin({
-	// 	template: "./public/index.html",
-	// })],
+	plugins: [new HtmlWebpackPlugin({
+		template: "./public/index.html",
+	})],
 	devtool: 'eval-source-map',
 });

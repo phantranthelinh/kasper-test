@@ -1,6 +1,6 @@
 import React from 'react'
 import "../styles/dots.scss"
-const Dots = () => {
+const DecimalPoint  = () => {
   return (
     <div className="dots-wrapper">
         <span></span>
@@ -11,4 +11,4 @@ const Dots = () => {
   )
 }
 
-export default Dots
+export default DecimalPoint 

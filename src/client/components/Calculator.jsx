@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../styles/calculator.scss";
-import Buttons from "./Buttons";
-import Display from "./Display";
-import Dots from "./Dots";
+import OperatorButtons from "./OperatorButtons";
+import CalculatorScreen  from "./CalculatorScreen";
+import DecimalPoint  from "./DecimalPoint";
+
+const DEFAULT_DISPLAY_VALUE = '0';
 
 const Calculator = () => {
-  const [display, setDisplay] = useState('0');
+  const [display, setDisplay] = useState(DEFAULT_DISPLAY_VALUE);
   const [operator, setOperator] = useState(null);
   const [operand1, setOperand1] = useState(null);
   const [waitingForOperand2, setWaitingForOperand2] = useState(false);
@@ -40,7 +42,7 @@ const Calculator = () => {
       setDisplay(number);
       setWaitingForOperand2(false);
     } else {
-      setDisplay(display === '0' ? number : display + number);
+      setDisplay(display === DEFAULT_DISPLAY_VALUE ? number : display + number);
     }
     setClearButtonLabel('C');
     setIsEdit(false)
@@ -65,20 +67,22 @@ const Calculator = () => {
 
   };
 
-  const performCalculation = (operand1, operand2, operator) => {
-    switch (operator) {
-      case '+':
-        return operand1 + operand2;
-      case '-':
-        return operand1 - operand2;
-      case '*':
-        return operand1 * operand2;
-      case '/':
-        return operand1 / operand2;
-      default:
-        return operand2;
-    }
-  };
+  const performCalculation = useMemo(() => {
+    return (operand1, operand2, operator) => {
+      switch (operator) {
+        case '+':
+          return operand1 + operand2;
+        case '-':
+          return operand1 - operand2;
+        case '*':
+          return operand1 * operand2;
+        case '/':
+          return operand1 / operand2;
+        default:
+          return operand2;
+      }
+    };
+  }, []);
 
   const handleEquals = () => {
     const inputValue = parseFloat(display);
@@ -97,7 +101,7 @@ const Calculator = () => {
   };
 
   const handleClear = () => {
-    setDisplay('0');
+    setDisplay(DEFAULT_DISPLAY_VALUE);
     setClearButtonLabel('AC');
     setOperator(null);
     setOperand1(null);
@@ -147,9 +151,9 @@ const Calculator = () => {
     <>
       <div className="container" onClick={handleClickOutSide}>
         <div className="main" ref={calculatorRef} >
-          <Dots />
-          <Display display={display} setDisplay={setDisplay} setIsEdit={setIsEdit} isEdit={isEdit} />
-          <Buttons
+          <DecimalPoint  />
+          <CalculatorScreen  display={display} setDisplay={setDisplay} setIsEdit={setIsEdit} isEdit={isEdit} />
+          <OperatorButtons
             {...props}
           />
         </div>

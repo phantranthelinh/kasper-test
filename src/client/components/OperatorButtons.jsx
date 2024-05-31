@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/buttons.scss";
 
-const Buttons = ({ handleEquals, clearButtonLabel, handleClear, handleOperatorClick, handleNumberClick, handleSignChange, handlePercentage, handleDecimal }) => {
+const OperatorButtons  = ({ handleEquals, clearButtonLabel, handleClear, handleOperatorClick, handleNumberClick, handleSignChange, handlePercentage, handleDecimal }) => {
 
 
 
@@ -74,4 +74,4 @@ const Buttons = ({ handleEquals, clearButtonLabel, handleClear, handleOperatorCl
 };
 
 
-export default Buttons;
+export default OperatorButtons;
